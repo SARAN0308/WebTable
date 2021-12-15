@@ -1,0 +1,61 @@
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.List;
+public class Design{
+    public static void main(String args[]){
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver=new ChromeDriver();
+        driver.get("https://www.techlistic.com/p/demo-selenium-practice.html");
+        driver.manage().window().maximize();
+        List<WebElement>  rowcount=driver.findElements(By.xpath("//table[@class='tsc_table_s13']/tbody/tr"));
+        List<WebElement>  colcount=driver.findElements(By.xpath("//table[@class='tsc_table_s13']/tbody/tr[1]/td"));
+
+        //Read data from row
+            for (int i=1;i<=rowcount.size();i++){
+                System.out.println(driver.findElement(By.xpath("//table[@class='tsc_table_s13']/tbody/tr["+i+"]/th[1]")).getText());
+                for (int j=1;j<=colcount.size();j++) {
+                    System.out.println(driver.findElement(By.xpath("//table[@class='tsc_table_s13']/tbody/tr["+i+"]/td["+j+"]")).getText());
+                }
+                System.out.println("/////////////////////////////////////");
+            }
+
+
+           ///structureheight verify
+                int Structcount=driver.findElements(By.xpath("//table[@class='tsc_table_s13']/tbody/tr/th")).size();
+                String count=driver.findElement(By.xpath("//table[@class='tsc_table_s13']/tfoot/tr/td")).getText();
+                if(Structcount==Integer.parseInt(String.valueOf(count.charAt(0))) ){
+                    System.out.println("Structcolumn and count column as same values");
+                }else{
+                    System.out.println("Structcolumn and count column as diff values");
+                }
+                List<WebElement> height=driver.findElements(By.xpath("//table[@class='tsc_table_s13']/tbody/tr/td[3]"));
+                for(int hcol = 1; hcol <= rowcount.size(); hcol++){
+                    String length=driver.findElement(By.xpath("//table[@class='tsc_table_s13']/tbody/tr["+hcol+"]/td[3]")).getText();
+                    for(WebElement exceute:height){
+                        if(length.equalsIgnoreCase(String.valueOf(exceute.getText()))){
+                            System.out.println("The structure as same height" +hcol);
+                        }else{
+                            System.out.println("The structure as different height" +hcol);
+                        }
+                    }
+                }
+               //lastrowcount
+                    int lastrowcount= driver.findElements(By.xpath("//table[@class='tsc_table_s13']/tfoot/tr/*")).size();
+                    if(lastrowcount==2) {
+                        System.out.println("Last row as two columns");
+                    }else{
+                        System.out.println("Last row as not have two columns");
+                    }
+
+              //Structure value    
+                        List<WebElement> stcolumn= driver.findElements(By.xpath("//table[@class='tsc_table_s13']/tbody/tr/th"));
+                        WebElement sizeofvalue= driver.findElement(By.xpath("//table[@class='tsc_table_s13']/tfoot/tr/td"));
+                        String str= sizeofvalue.getText();
+                        String num=String.valueOf(str.charAt(0));
+                        if(stcolumn.size()==Integer.parseInt(num)){
+                            System.out.println("number of structure" +stcolumn.size());
+                            System.out.println("sizeofvalue" +num);
+                        }
+                    }}
+    
